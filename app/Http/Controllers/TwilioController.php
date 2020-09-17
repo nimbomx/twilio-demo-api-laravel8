@@ -9,7 +9,8 @@ class TwilioController extends Controller
     public function callme() {
         // Your Account SID and Auth Token from twilio.com/console
         $sid    = "AC6d6096c1c8079b25532df7900d1d8350";
-        $token  = "d30bf47e27df4f7964be75caf8a4677b";
+        //$token  = "d30bf47e27df4f7964be75caf8a4677b";
+        $token  = "1cba3e88753d46dd5f8491aafa898f8f";
         // In production, these should be environment variables. E.g.:
         // $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
         // $auth_token = "AC6d6096c1c8079b25532df7900d1d8350";
@@ -25,7 +26,8 @@ class TwilioController extends Controller
         
         $to_number = "+524448496307";
         
-        $client = new Client($sid, $token);
+        $client = new Client($sid, $token,);
+
         $client->account->calls->create(  
         $to_number,
         $TWILIO_NUMBER,
