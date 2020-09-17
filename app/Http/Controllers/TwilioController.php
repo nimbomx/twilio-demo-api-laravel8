@@ -6,27 +6,14 @@ use Illuminate\Http\Request;
 
 class TwilioController extends Controller
 {
-    public function callme() {
-        // Your Account SID and Auth Token from twilio.com/console
-        $sid    = "AC6d6096c1c8079b25532df7900d1d8350";
-        //$token  = "d30bf47e27df4f7964be75caf8a4677b";
-        $token  = "1cba3e88753d46dd5f8491aafa898f8f";
-        // In production, these should be environment variables. E.g.:
-        // $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
-        // $auth_token = "AC6d6096c1c8079b25532df7900d1d8350";
+    public function callme(Request $request) {
+        $ACCOUNT_SID    = env('TWILIO_ACCOUNT_SID');
+        $AUTH_TOKEN  = env('TWILIO_AUTH_TOKEN');
+        $TWILIO_NUMBER = env('TWILIO_NUMBER');
         
-        // A Twilio number you own with Voice capabilities
-        //$twilio_number = "+18087935960";
+        $to_number = $request->number;
         
-        //$twilio_number = "+12107916676";
-        
-        $TWILIO_NUMBER = "+523319309269";
-        
-        // Where to make a voice call (your cell phone?)
-        
-        $to_number = "+524448496307";
-        
-        $client = new Client($sid, $token,);
+        $client = new Client($ACCOUNT_SID, $AUTH_TOKEN);
 
         $client->account->calls->create(  
         $to_number,
