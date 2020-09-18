@@ -40,7 +40,7 @@ class TwilioController extends Controller
 
         $provider = Providers::findOrFail($request->id);
 
-        $to_number =  str_replace('-','',filter_var($provider->phone, FILTER_SANITIZE_NUMBER_INT)); //GET THE MANAGER PHONE
+        $to_number =  str_replace('-','',filter_var($request->user()->phone, FILTER_SANITIZE_NUMBER_INT)); //GET THE MANAGER PHONE
         $ACCOUNT_SID    = env('TWILIO_ACCOUNT_SID');
         $AUTH_TOKEN  = env('TWILIO_AUTH_TOKEN');
         $TWILIO_NUMBER = env('TWILIO_NUMBER');
