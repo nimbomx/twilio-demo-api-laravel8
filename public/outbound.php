@@ -3,23 +3,31 @@ require  '../vendor/autoload.php';
 
 use Twilio\TwiML\VoiceResponse;
 
-$host = $_SERVER['HTTP_HOST'];
-$id = 1;
-$salesPhone = '+1210791 6676';
+
 function generate_twiml_response() {
+    $salesPhone='+12107916676';
+    if (array_key_exists('QUERY_STRING', $_SERVER)) {
+        $queryArgs = array();
+        parse_str($_SERVER['QUERY_STRING'], $queryArgs);
+        $salesPhone = $queryArgs['phone'];
+        $ID = $queryArgs['ID'];
+    }
+
+    $host = $_SERVER['HTTP_HOST'];
 
     $response = new VoiceResponse();
     $response->say('Please, hold in the line, until the provider answers');
             
-    $dial = $response->dial('+12107916676');
+    //$dial = $response->dial($salesPhone);
     //'statusCallbackEvent' => 'initiated ringing answered completed',
-   /* $dial->number($salesPhone,
+    $dial = $response->dial('');
+    $dial->number($salesPhone,
     [
-        "statusCallback" => "https://$host/api/twilio/provider_events/$id",
+        "statusCallback" => "https://$host/api/twilio/provider_events/$ID",
         "statusCallbackEvent" => "initiated ringing answered completed",
         "statusCallbackMethod" => "POST"
     ]
-    );*/
+    );
 /*
     
 */

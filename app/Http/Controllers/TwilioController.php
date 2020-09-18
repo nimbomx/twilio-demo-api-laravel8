@@ -49,16 +49,10 @@ class TwilioController extends Controller
         $client = new Client($ACCOUNT_SID, $AUTH_TOKEN);
 
         $host = $_SERVER['HTTP_HOST'];
-
-   
         
         $encodedSalesPhone = urlencode(str_replace('-','',filter_var($provider->phone, FILTER_SANITIZE_NUMBER_INT))); 
         //$outboundUri = "https://$host/api/twilio/outbound/$encodedSalesPhone/$request->id";
-        $outboundUri = "https://$host/outbound.php";
-
-        $myfile = fopen("$request->id.txt", "w");
-        fwrite($myfile, "a:$outboundUri");
-        fclose($myfile);
+        $outboundUri = "https://$host/outbound.php?phone=$encodedSalesPhone&ID=$request->id";
 
         try {
             $call = $client->calls->create(

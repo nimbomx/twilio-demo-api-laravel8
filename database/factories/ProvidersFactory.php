@@ -27,7 +27,7 @@ class ProvidersFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'type' => $this->faker->randomElement(['person' ,'agency']),
             'contracted' => $this->faker->boolean,
-            'phone' => '+52 (444) 849-6307',
+            'phone' => '+1 (210) 791-6676', //+1 210 791 6676
             'status' => $this->faker->randomElement(['contacting','talked','scheduled','signed','cancel'])
         ];
 
