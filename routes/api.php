@@ -23,7 +23,8 @@ Route::middleware('auth:sanctum')->get('/providers', [ProvidersController::class
 Route::middleware('auth:sanctum')->post('/twilio/callme', [TwilioController::class, 'callme']);
 Route::middleware('auth:sanctum')->post('/twilio/connect_call', [TwilioController::class, 'connectCall']);
 Route::get('/twilio/sse/{id}', [TwilioController::class, 'sse']);
-Route::get('/twilio/admin_events/{id}', [TwilioController::class, 'adminEvents']);
+Route::post('/twilio/admin_events/{id}', [TwilioController::class, 'adminEvents']);
+Route::post('/twilio/provider_events/{id}', [TwilioController::class, 'providerEvents']);
 Route::get('/twilio/outbound/{phone}/{id}', [TwilioController::class, 'outbound']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

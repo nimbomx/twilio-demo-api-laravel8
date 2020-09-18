@@ -53,30 +53,27 @@ class TwilioController extends Controller
    
         
         $encodedSalesPhone = urlencode(str_replace('-','',filter_var($provider->phone, FILTER_SANITIZE_NUMBER_INT))); 
-        $outboundUri = "https://$host/outbound/$encodedSalesPhone/$request->id";
+        //$outboundUri = "https://$host/api/twilio/outbound/$encodedSalesPhone/$request->id";
+        $outboundUri = "https://$host/outbound.php";
 
+        $myfile = fopen("$request->id.txt", "w");
+        fwrite($myfile, "a:$outboundUri");
+        fclose($myfile);
 
-       /* $client->account->calls->create(  
-            $to_number,
-            $TWILIO_NUMBER,
-            array(
-                "url" => "http://demo.twilio.com/docs/voice.xml"
-                )
-            );
-
-            return 'C';*/
         try {
             $call = $client->calls->create(
                  $to_number,                 // The visitor's phone number
                  $TWILIO_NUMBER,    // A Twilio number in your account
                  [
                      "method" => "GET",
-                     "statusCallback" => "https://$host/admin_events/$request->id",
-                     "statusCallbackEvent" => ["initiated","ringing","answered","busy","cancelled","completed","failed","no-answer"],//"initiated ringing answered completed",
-                     "statusCallbackMethod" => "POST",
                      "url" => $outboundUri,   // public URL TwiML that handles the call
-                 ]
-             );
+                     "statusCallback" => "https://$host/api/twilio/admin_events/$request->id",
+                     "statusCallbackEvent" => ["initiated","ringing","answered","completed"],//"initiated ringing answered completed",
+                     "statusCallbackMethod" => "POST",
+                     
+                     ]
+                    );
+                    
              print($call->sid);
          } catch (Exception $e) {
              // Failed calls will throw
@@ -85,15 +82,40 @@ class TwilioController extends Controller
     }
 
     public function outbound(Request $request,$phone,$id) {
-
-        $response = new VoiceResponse();
-        $response->say('Thanks for contacting our sales department. Our next available representative will take your call');
+        $host = $_SERVER['HTTP_HOST'];
+        $salesPhone = '+524446039460';
+        function generate_twiml_response() {
+            $response = new VoiceResponse();
+            $response->say('Please, hold in the line, until the provider answers');
+            
+            $dial = $response->dial('');
+            //'statusCallbackEvent' => 'initiated ringing answered completed',
+            $dial->number($salesPhone
+            );
+/*
+            [
+                "statusCallback" => "https://$host/api/twilio/provider_events/$id",
+                "statusCallbackEvent" => "initiated ringing answered completed",
+                "statusCallbackMethod" => "POST"
+            ]
+*/
+            return (string)$response;
+        }
+        
+        print_r(generate_twiml_response());
+ 
       
     }
     public function adminEvents(Request $request,$id) {
 
         $myfile = fopen("$id.txt", "w");
-        fwrite($myfile, 'a:' . $_POST['CallStatus']);
+        fwrite($myfile, 'a:' . $request->CallStatus);
+      
+    }
+    public function providerEvents(Request $request,$id) {
+
+        $myfile = fopen("$id.txt", "w");
+        fwrite($myfile, 'p:' . $request->CallStatus);
       
     }
 
