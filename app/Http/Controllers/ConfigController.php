@@ -17,6 +17,14 @@ class ConfigController extends Controller
 
     public function update(Request $request)
     {
-        return $request->user()->load('config');
+        $config = $request->user()->config;
+        if (!$config) {
+            $config = $request->user()->config()->create();
+        }
+        $config->twilio_account_sid = $request->twilio_account;
+        $config->twilio_auth_token = $request->twilio_token;
+        $config->twilio_number = $request->twilio_number;
+        $config->save();
+        return $config;
     }
 }
