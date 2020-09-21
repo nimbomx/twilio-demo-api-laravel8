@@ -11,7 +11,7 @@ class ConfigController extends Controller
 
     public function show(Request $request)
     {
-        return $request->user()->load('config');
+        return $request->user()->config;
     }
 
 
