@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ProvidersController;
 use App\Http\Controllers\TwilioController;
 use Illuminate\Http\Request;
