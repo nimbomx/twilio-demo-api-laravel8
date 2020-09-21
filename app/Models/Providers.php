@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Providers extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'phone', 'rate', 'feedback', "status"
+    ];
 }
