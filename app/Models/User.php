@@ -41,6 +41,6 @@ class User extends Authenticatable
 
     public function config()
     {
-        return $this->belongTo(Config::class);
+        return $this->hasOne(Config::class);
     }
 }
