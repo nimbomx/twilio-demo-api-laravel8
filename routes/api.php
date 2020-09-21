@@ -22,6 +22,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/providers', [ProvidersController::class, 'index']);
 Route::middleware('auth:sanctum')->post('/twilio/callme', [TwilioController::class, 'callme']);
 Route::middleware('auth:sanctum')->post('/twilio/connect_call', [TwilioController::class, 'connectCall']);
+
+Route::middleware('auth:sanctum')->put('/config', [ConfigController::class, 'update']);
+Route::middleware('auth:sanctum')->get('/config', [ConfigController::class, 'show']);
+
 Route::get('/twilio/sse/{id}', [TwilioController::class, 'sse']);
 Route::post('/twilio/admin_events/{id}', [TwilioController::class, 'adminEvents']);
 Route::post('/twilio/provider_events/{id}', [TwilioController::class, 'providerEvents']);
