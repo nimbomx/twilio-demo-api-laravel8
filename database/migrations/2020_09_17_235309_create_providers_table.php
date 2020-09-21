@@ -17,10 +17,12 @@ class CreateProvidersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->enum('type',['person','agency']);
+            $table->enum('type', ['person', 'agency']);
             $table->boolean('contracted')->default(false);
             $table->string('phone');
-            $table->enum('status',['contacting','talked','scheduled','signed','cancel']);
+            $table->enum('status', ['contacting', 'talked', 'scheduled', 'signed', 'cancel']);
+            $table->text('feedback')->nullable();
+            $table->unsignedInteger('rate')->default(0);
             $table->timestamps();
         });
     }

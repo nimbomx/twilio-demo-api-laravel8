@@ -67,9 +67,10 @@ class ProvidersController extends Controller
      * @param  \App\Models\Providers  $providers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Providers $providers)
+    public function update(Request $request, Providers $provider)
     {
-        //
+        $provider->update($request->only('status', 'phone'));
+        return $provider;
     }
 
     /**
