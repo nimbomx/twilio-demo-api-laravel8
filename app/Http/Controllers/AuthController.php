@@ -11,19 +11,29 @@ class AuthController extends Controller
 {
     
     public function register(Request $request){
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'name' => 'required|string|min:3',
+            'phone' => 'required',
+            'password' => 'required|confirmed|min:3|max:100'
+        ]);
         return User::create([
-            "name" => $request->name,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "password" => Hash::make($request->password)
+            "name" => $validated["name"],
+            "email" => $validated["email"],
+            "phone" => $validated["phone"],
+            "password" => Hash::make($validated["password"])
         ]);
     }
     public function login(Request $request){
-        $credentials = $request->only('email', 'password'); 
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:3|max:100'
+        ]);
         if (Auth::attempt($credentials)) {
             $user=Auth::user();
             $token = $user->createToken('twilio-token')->plainTextToken;
             return compact('user','token');
         }
+        abort(401);
     }
 }
